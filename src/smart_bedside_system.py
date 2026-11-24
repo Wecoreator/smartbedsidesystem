@@ -29,6 +29,8 @@ class SmartBedsideSystem:
         self.alarm_on = False  # Replace None by initializing the alarm status (see User Story #2).
         GPIO.setup(self.BUZZER_PIN, GPIO.OUT, initial=GPIO.LOW)
 
+        GPIO.setup(self.BUTTON_PIN, GPIO.IN)
+
         self.o2_servo = None  # Replace None by initializing the servo motor's PWM instance (see User Story #4).
         self.o2_valve_angle = None  # Replace None by initializing the valve angle, in degrees (see User Story #4).
 
@@ -64,6 +66,10 @@ class SmartBedsideSystem:
         """
         Stop the alarm if the pushbutton is pressed. Otherwise, leave the alarm unchanged.
         """
+        if GPIO.input(self.BUTTON_PIN): #pressed
+            self.alarm_on = False
+            GPIO.output(self.BUZZER_PIN, False)
+
         # See User Story #3.
 
     def set_o2_valve_angle(self, angle: float) -> None:
